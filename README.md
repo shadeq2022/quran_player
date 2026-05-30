@@ -1,4 +1,7 @@
 # Quran Player
+<p align="center">
+  <img src="assets/icon.png" alt="Al-quran Player Logo" width="240"/>
+</p>
 
 Quran Player is a focused Flutter audio application designed specifically for Quran memorization (Tahfidz) and repetition (Muraja'ah). It uses the public [Al-Quran Cloud API](https://alquran.cloud) to load Quran Surah metadata, fetch Arabic ayah text, and stream Mishary Rashid Alafasy recitation audio as playable tracks.
 
@@ -135,11 +138,11 @@ Current test coverage includes:
 - Widget test for toggling a Surah favorite icon.
 
 ## Screenshots
-
-- Surah list.
-- Search results.
-- Playing screen with ayah card.
-- Favorites tab with saved Surahs.
+<p align="center">
+  <img src="docs/docs1.png" style="width:90%;" />
+  <br> 
+  <img src="docs/docs2.png" style="width:90%;" />
+</p>
 
 ## Known Limitations
 
