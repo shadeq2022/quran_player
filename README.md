@@ -1,6 +1,6 @@
 # Quran Player
 <p align="center">
-  <img src="assets/icon.png" alt="Al-quran Player Logo" width="240"/>
+  <img src="docs/docs2.png" style="width:80%;" />
 </p>
 
 Quran Player is a focused Flutter audio application designed specifically for Quran memorization (Tahfidz) and repetition (Muraja'ah). It uses the public [Al-Quran Cloud API](https://alquran.cloud) to load Quran Surah metadata, fetch Arabic ayah text, and stream Mishary Rashid Alafasy recitation audio as playable tracks.
@@ -29,62 +29,6 @@ This project uses `flutter_bloc` with a single `PlayerCubit`.
 - Playback commands: play, pause, resume, seek, previous, next, and loop.
 
 Widgets are intentionally kept thin. They render the current `PlayerState` and call Cubit methods for user actions.
-
-## Project Structure
-
-```text
-lib/
-  main.dart
-  src/
-    app.dart
-    core/
-      theme/
-        app_colors.dart
-        app_theme.dart
-      utils/
-        duration_formatter.dart
-    data/
-      favorites_store.dart
-      quran_api_service.dart
-    models/
-      ayah.dart
-      surah.dart
-    presentation/
-      pages/
-        home_page.dart
-        player_page.dart
-      widgets/
-        geometric_art.dart
-        mini_player.dart
-        surah_list.dart
-        surah_tile.dart
-    state/
-      player_cubit.dart
-      player_state.dart
-test/
-  unit_test.dart
-  widget_test.dart
-```
-
-## API Usage
-
-Surah metadata:
-
-```text
-GET https://api.alquran.cloud/v1/surah
-```
-
-Ayah text:
-
-```text
-GET https://api.alquran.cloud/v1/surah/{surahNumber}
-```
-
-Audio streaming URL pattern:
-
-```text
-https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/{surahNumber}.mp3
-```
 
 ## Main Libraries
 
@@ -139,9 +83,11 @@ Current test coverage includes:
 
 ## Screenshots
 <p align="center">
-  <img src="docs/docs1.png" style="width:90%;" />
-  <br> 
   <img src="docs/docs2.png" style="width:90%;" />
+</p>
+
+<p align="center">
+  <img src="assets/icon.png" alt="Al-quran Player Logo" width="240"/>
 </p>
 
 ## Known Limitations
