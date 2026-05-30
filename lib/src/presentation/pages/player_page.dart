@@ -24,6 +24,7 @@ class PlayerPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            // Top app bar with navigation and favorite toggle.
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
               child: Row(
@@ -63,6 +64,7 @@ class PlayerPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  // Main ayah display surface.
                   child: _AyahLyricsView(state: state),
                 ),
               ),
@@ -72,6 +74,7 @@ class PlayerPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // Surah metadata and playback controls.
                   DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white70, width: 1.3),
@@ -93,6 +96,7 @@ class PlayerPage extends StatelessWidget {
                   Slider(
                     value: sliderValue,
                     max: maxSeconds,
+                    // Seek within the current track.
                     onChanged: (seconds) => cubit.seek(Duration(seconds: seconds.round())),
                   ),
                   const SizedBox(height: 4),
@@ -200,6 +204,7 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
   GlobalKey _keyForIndex(int index) => _itemKeys.putIfAbsent(index, GlobalKey.new);
 
   void _scrollToActiveAyah() {
+    // Keep the currently playing ayah near the center of the viewport.
     final activeIndex = widget.state.currentAyahIndex;
     if (activeIndex == null || !_controller.hasClients) {
       return;
@@ -261,6 +266,7 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
             itemBuilder: (context, index) {
               final ayah = ayahs[index];
               final isActive = activeIndex == index;
+              // Hide leading bismillah for ayah 1 (except Al-Fatihah).
               final displayText = ayah.numberInSurah == 1 && surahNumber != 1
                 ? _stripBismillah(ayah.text)
                 : ayah.text;
@@ -279,6 +285,7 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
+                          // Tap the ayah number to jump to its audio.
                         onTap: () => cubit.playAyah(index),
                         borderRadius: BorderRadius.circular(10),
                         child: Container(

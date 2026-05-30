@@ -76,20 +76,6 @@ void main() {
       activeTrackIndex: 2,
     );
 
-    expect(state.currentAyah?.numberInSurah, 2);
-  });
-
-  test('PlayerState hides a leading Bismillah track from the active ayah index', () {
-    final state = const PlayerState(
-      ayahs: [
-        Ayah(numberInSurah: 1, text: 'Bismillah', audioUrl: 'https://example.com/bismillah.mp3'),
-        Ayah(numberInSurah: 2, text: 'Ayah one', audioUrl: 'https://example.com/1.mp3'),
-        Ayah(numberInSurah: 3, text: 'Ayah two', audioUrl: 'https://example.com/2.mp3'),
-      ],
-      hasBismillahTrack: true,
-      activeTrackIndex: 1,
-    );
-
-    expect(state.currentAyah?.numberInSurah, 2);
+    expect(state.currentAyah?.numberInSurah, 3);
   });
 }

@@ -53,6 +53,7 @@ class SurahTile extends StatelessWidget {
                         height: 20,
                         child: IgnorePointer(
                           ignoring: true,
+                          // Animate long subtitles only for the active surah.
                           child: Marquee(
                             text:
                                 '${surah.englishName} - ${surah.ayahs} ayahs - ${surah.type}',
@@ -77,6 +78,7 @@ class SurahTile extends StatelessWidget {
                 ),
               ),
               IconButton(
+                // Favorite toggle keeps the list in sync with the favorites tab.
                 onPressed: () => cubit.toggleFavorite(surah),
                 icon: Icon(
                   favorite
@@ -86,6 +88,7 @@ class SurahTile extends StatelessWidget {
                 color: favorite ? AppColors.cyan : AppColors.textMuted,
               ),
               IconButton(
+                // Quick play action without opening the player page.
                 onPressed: () => cubit.play(surah),
                 icon: const Icon(Icons.play_arrow_rounded),
               ),

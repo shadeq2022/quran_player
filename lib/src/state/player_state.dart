@@ -41,6 +41,7 @@ class PlayerState {
   final bool loopEnabled;
 
   Ayah? get currentAyah {
+    // Map current audio index to an ayah model for UI highlighting.
     final index = currentAyahIndex;
     if (index == null) {
       return null;
@@ -49,6 +50,7 @@ class PlayerState {
   }
 
   int? get currentAyahIndex {
+    // Clamp to safe bounds in case the audio index is out of range.
     final visible = visibleAyahs;
     if (visible.isEmpty) {
       return null;
@@ -62,6 +64,7 @@ class PlayerState {
   }
 
   List<Surah> get visibleSurahs {
+    // Apply tab filter (all vs favorites) and query filter together.
     final lowerQuery = query.trim().toLowerCase();
     Iterable<Surah> list = tab == 1 ? surahs.where((surah) => favorites.contains(surah.number)) : surahs;
     if (lowerQuery.isNotEmpty) {

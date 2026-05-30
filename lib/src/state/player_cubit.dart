@@ -24,6 +24,7 @@ class PlayerCubit extends Cubit<PlayerState> {
   final List<StreamSubscription<dynamic>> _subscriptions = [];
 
   Future<void> init() async {
+    // Wire up audio player streams to keep UI state in sync.
     _subscriptions
       ..add(player.positionStream.listen((position) => emit(state.copyWith(position: position))))
       ..add(player.durationStream.listen((duration) => emit(state.copyWith(duration: duration ?? Duration.zero))))
@@ -66,6 +67,7 @@ class PlayerCubit extends Cubit<PlayerState> {
   }
 
   Future<void> play(Surah surah) async {
+    // Reset playback-related state before loading fresh ayahs.
     emit(state.copyWith(
       current: surah,
       ayahs: const [],
@@ -78,6 +80,7 @@ class PlayerCubit extends Cubit<PlayerState> {
     final ayahs = await _loadAyahs(surah.number);
     emit(state.copyWith(ayahs: ayahs, hasBismillahTrack: false, activeTrackIndex: 0));
 
+    // Prefer per-ayah audio list; fall back to full-surah track when needed.
     if (ayahs.isNotEmpty) {
       await player.setAudioSources(
         ayahs.map((ayah) => AudioSource.uri(Uri.parse(ayah.audioUrl))).toList(),
@@ -150,6 +153,7 @@ class PlayerCubit extends Cubit<PlayerState> {
     if (trackIndex < 0 || trackIndex >= state.ayahs.length) {
       return;
     }
+    // Jump directly to the requested ayah and resume playback if paused.
     await player.seek(Duration.zero, index: trackIndex);
     if (!player.playing) {
       await player.play();

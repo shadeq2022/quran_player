@@ -27,6 +27,7 @@ class QuranApiService {
   }
 
   Future<List<Ayah>> fetchAyahs(int surahNumber) async {
+    // Fetch per-ayah text and audio for a specific surah.
     final response = await _client.get(Uri.parse('https://api.alquran.cloud/v1/surah/$surahNumber/ar.alafasy'));
     if (response.statusCode != 200) {
       throw QuranApiException('API returned ${response.statusCode}');

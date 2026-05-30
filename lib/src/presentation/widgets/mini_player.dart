@@ -22,6 +22,7 @@ class MiniPlayer extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
+            // Subtle highlight to keep the mini player distinct from the list.
             border: Border.all(color: AppColors.cyan.withValues(alpha: 0.22), width: 1.1),
             boxShadow: [
               BoxShadow(

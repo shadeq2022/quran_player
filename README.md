@@ -78,23 +78,6 @@ flutter pub get
 flutter run
 ```
 
-## Testing
-
-Run all tests:
-
-```bash
-flutter test
-```
-
-Current test coverage includes:
-
-- Duration formatting edge cases.
-- Surah JSON parsing and audio URL generation.
-- Estimated current ayah calculation.
-- Search filtering in `PlayerState`.
-- Favorites tab filtering in `PlayerState`.
-- Widget test for toggling a Surah favorite icon.
-
 ## Screenshots
 <p align="center">
   <img src="docs/docs2.png" style="width:90%;" />
