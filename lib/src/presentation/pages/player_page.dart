@@ -97,38 +97,50 @@ class PlayerPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        onPressed: cubit.skipPrevious,
-                        icon: const Icon(Icons.skip_previous_rounded),
-                        iconSize: 24,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints.tightFor(width: 36, height: 36),
-                      ),
                       SizedBox(
-                        width: 46,
-                        height: 46,
+                        width: 42,
+                        height: 42,
+                        child: IconButton(
+                          onPressed: cubit.skipPrevious,
+                          icon: const Icon(Icons.skip_previous_rounded),
+                          iconSize: 22,
+                          padding: EdgeInsets.zero,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      SizedBox(
+                        width: 48,
+                        height: 48,
                         child: FilledButton(
                           style: FilledButton.styleFrom(shape: const CircleBorder(), backgroundColor: AppColors.purple),
                           onPressed: cubit.togglePlay,
                           child: Icon(state.playing ? Icons.pause_rounded : Icons.play_arrow_rounded, size: 22),
                         ),
                       ),
-                      IconButton(
-                        onPressed: cubit.skipNext,
-                        icon: const Icon(Icons.skip_next_rounded),
-                        iconSize: 24,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints.tightFor(width: 36, height: 36),
+                      const SizedBox(width: 12),
+                      SizedBox(
+                        width: 42,
+                        height: 42,
+                        child: IconButton(
+                          onPressed: cubit.skipNext,
+                          icon: const Icon(Icons.skip_next_rounded),
+                          iconSize: 22,
+                          padding: EdgeInsets.zero,
+                        ),
                       ),
-                      IconButton(
-                        onPressed: cubit.toggleLoop,
-                        icon: Icon(state.loopEnabled ? Icons.repeat_one_rounded : Icons.repeat_rounded),
-                        color: state.loopEnabled ? AppColors.cyan : Colors.white,
-                        iconSize: 22,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints.tightFor(width: 36, height: 36),
+                      const SizedBox(width: 12),
+                      SizedBox(
+                        width: 42,
+                        height: 42,
+                        child: IconButton(
+                          onPressed: cubit.toggleLoop,
+                          icon: Icon(state.loopEnabled ? Icons.repeat_one_rounded : Icons.repeat_rounded),
+                          color: state.loopEnabled ? AppColors.cyan : Colors.white,
+                          iconSize: 20,
+                          padding: EdgeInsets.zero,
+                        ),
                       ),
                     ],
                   ),
@@ -198,8 +210,10 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<PlayerCubit>();
     final ayahs = widget.state.visibleAyahs;
     final activeIndex = widget.state.currentAyahIndex;
+    final surahNumber = widget.state.current?.number ?? 0;
     if (ayahs.isEmpty) {
       return const Center(
         child: Padding(
@@ -237,6 +251,9 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
             itemBuilder: (context, index) {
               final ayah = ayahs[index];
               final isActive = activeIndex == index;
+              final displayText = ayah.numberInSurah == 1 && surahNumber != 1
+                ? _stripBismillah(ayah.text)
+                : ayah.text;
               return AnimatedContainer(
                 key: _keyForIndex(index),
                 duration: const Duration(milliseconds: 220),
@@ -249,21 +266,28 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 32,
-                      height: 32,
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(top: 4),
-                      decoration: BoxDecoration(
-                        color: isActive ? AppColors.cyan : Colors.white.withValues(alpha: 0.14),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => cubit.playAyah(index),
                         borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        _toArabicIndicDigits(ayah.numberInSurah),
-                        style: TextStyle(
-                          color: isActive ? AppColors.background : Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14,
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(top: 4),
+                          decoration: BoxDecoration(
+                            color: isActive ? AppColors.cyan : Colors.white.withValues(alpha: 0.14),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            _toArabicIndicDigits(ayah.numberInSurah),
+                            style: TextStyle(
+                              color: isActive ? AppColors.background : Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -279,7 +303,7 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
                             height: 1.65,
                             fontWeight: isActive ? FontWeight.w800 : FontWeight.w500,
                           ),
-                          child: Text(ayah.text, textAlign: TextAlign.right),
+                          child: Text(displayText, textAlign: TextAlign.right),
                         ),
                       ),
                     ),
@@ -297,4 +321,17 @@ class _AyahLyricsViewState extends State<_AyahLyricsView> {
 String _toArabicIndicDigits(int value) {
   const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
   return value.toString().split('').map((digit) => digits[int.parse(digit)]).join();
+}
+
+final RegExp _bismillahRegex = RegExp(
+  r'\s*ب[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*س[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*م[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*'
+  r'[اٱ][\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ل[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ل[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ه[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*'
+  r'[اٱ][\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ل[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ر[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ح[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*م[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ن[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*'
+  r'[اٱ][\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ل[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ر[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ح[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*ي[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*م[\u064B-\u065F\u0670\u06D6-\u06ED]*\s*',
+  caseSensitive: false,
+);
+
+String _stripBismillah(String text) {
+  final cleaned = text.replaceAll(_bismillahRegex, ' ');
+  return cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
 }

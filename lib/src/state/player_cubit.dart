@@ -76,8 +76,7 @@ class PlayerCubit extends Cubit<PlayerState> {
     ));
 
     final ayahs = await _loadAyahs(surah.number);
-    final hasBismillahTrack = _hasBismillahTrack(ayahs);
-    emit(state.copyWith(ayahs: ayahs, hasBismillahTrack: hasBismillahTrack, activeTrackIndex: 0));
+    emit(state.copyWith(ayahs: ayahs, hasBismillahTrack: false, activeTrackIndex: 0));
 
     if (ayahs.isNotEmpty) {
       await player.setAudioSources(
@@ -99,18 +98,6 @@ class PlayerCubit extends Cubit<PlayerState> {
     }
   }
 
-  bool _hasBismillahTrack(List<Ayah> ayahs) {
-    if (ayahs.isEmpty) {
-      return false;
-    }
-
-    final normalized = ayahs.first.text
-        .replaceAll(RegExp(r'[\uFEFF\u200E\u200F]'), '')
-        .replaceAll(RegExp(r'[\u064B-\u065F\u0670\u06D6-\u06ED]'), '')
-        .trim()
-        .replaceAll('ٱ', 'ا');
-    return normalized.startsWith('بسم');
-  }
 
   Future<void> togglePlay() async {
     if (player.playing) {
@@ -153,6 +140,20 @@ class PlayerCubit extends Cubit<PlayerState> {
     final enabled = !state.loopEnabled;
     await player.setLoopMode(enabled ? LoopMode.one : LoopMode.off);
     emit(state.copyWith(loopEnabled: enabled));
+  }
+
+  Future<void> playAyah(int ayahIndex) async {
+    if (state.ayahs.isEmpty) {
+      return;
+    }
+    final trackIndex = ayahIndex;
+    if (trackIndex < 0 || trackIndex >= state.ayahs.length) {
+      return;
+    }
+    await player.seek(Duration.zero, index: trackIndex);
+    if (!player.playing) {
+      await player.play();
+    }
   }
 
   @override

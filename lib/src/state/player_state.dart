@@ -53,18 +53,12 @@ class PlayerState {
     if (visible.isEmpty) {
       return null;
     }
-    final index = hasBismillahTrack ? activeTrackIndex - 1 : activeTrackIndex;
-    if (index < 0) {
-      return null;
-    }
+    final index = activeTrackIndex;
     return index.clamp(0, visible.length - 1);
   }
 
   List<Ayah> get visibleAyahs {
-    if (!hasBismillahTrack || ayahs.isEmpty) {
-      return ayahs;
-    }
-    return ayahs.sublist(1);
+    return ayahs;
   }
 
   List<Surah> get visibleSurahs {
