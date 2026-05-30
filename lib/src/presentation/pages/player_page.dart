@@ -28,7 +28,7 @@ class PlayerPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
               child: Row(
                 children: [
-                  IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.keyboard_arrow_down_rounded)),
+                  IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.keyboard_arrow_left_rounded)),
                   const Spacer(),
                   Column(
                     children: [
@@ -114,9 +114,19 @@ class PlayerPage extends StatelessWidget {
                         width: 48,
                         height: 48,
                         child: FilledButton(
-                          style: FilledButton.styleFrom(shape: const CircleBorder(), backgroundColor: AppColors.purple),
+                          style: FilledButton.styleFrom(
+                            shape: const CircleBorder(),
+                            backgroundColor: AppColors.purple,
+                            padding: EdgeInsets.zero,
+                          ),
                           onPressed: cubit.togglePlay,
-                          child: Icon(state.playing ? Icons.pause_rounded : Icons.play_arrow_rounded, size: 22),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: state.playing ? 0 : 2),
+                            child: Icon(
+                              state.playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                              size: 22,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
