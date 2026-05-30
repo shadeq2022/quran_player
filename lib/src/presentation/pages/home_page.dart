@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Al-Quran Player', style: TextStyle(fontWeight: FontWeight.w800)),
-                Text('Mishary Alafasy recitation', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                Text('Listen & Read Along', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
               ],
             ),
             actions: [
